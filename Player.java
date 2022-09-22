@@ -22,6 +22,7 @@ public class Player
     public Player()
     {
         hp = 2;
+        maxHp = 2;
         dmg = 1;
         diceMod = 0;
     }
@@ -45,7 +46,9 @@ public class Player
     }
     
     public void takeDmg(int dmgFromPlayer){
-        this.hp -= dmgFromPlayer;
+        if (dmgFromPlayer > 0){
+            hp -= dmgFromPlayer;
+        }
         lowerBoundHp();
     }
     
@@ -65,5 +68,19 @@ public class Player
         }
     }
     
+    public boolean isDead(){
+        return (hp == 0);
+    }
+    
+    public void reset(){
+        hp = maxHp;
+    }
+    
+    public void heal(int h){
+        if (h > 0){
+            hp += h;
+        }
+        upperBoundHp();
+    }
     
 }
