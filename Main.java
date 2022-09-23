@@ -8,13 +8,14 @@ public class Main
     {
         Runner r = new Runner();
         for (int i = 0; i < 9999; i++){
-            Roll a = new Roll(6);
+            Roll a = new Roll(-2);
             r.addResult(String.valueOf(a.getCurrent()));
         }
-        //r.addResult("a");
-        //r.addResult("b");
-        //r.addResult("c");
-        //r.addResult("d");
+        // r.addResult("a");
+        // r.addResult("b");
+        // r.addResult("c");
+        // r.addResult("d");
         r.print();
+        System.out.println();
     }
 }

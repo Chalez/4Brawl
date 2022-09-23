@@ -34,12 +34,22 @@ public class Runner
         }
     }
     
-    // Prints the outcomes, the number of times they happened, and a decimal.
+    // Prints the outcomes, the number of times they happened, and decimal equivalent.
     public void print(){
         String format = "%-20s%-20s%s%n";
         Object[] array = map.keySet().toArray();
         for(int i = 0; i < array.length; i++){
             System.out.printf(format, String.valueOf(array[i]), map.get(array[i]).toString(), String.valueOf((double)map.get(array[i]).intValue() / total));
         }
+    }
+    
+    // Returns the map itself- mostly for the purpose of tests, which can't understand the print version
+    public HashMap getMap(){
+        return map;
+    }
+    
+    // Returns the number of inputs given to this runner.
+    public int getTotal(){
+        return total;
     }
 }

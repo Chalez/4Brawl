@@ -12,15 +12,40 @@ public class Roll
     // instance variables - replace the example below with your own
     private int max;
     private int current;
+    private Player owner;
 
     /**
      * Constructor for objects of class Roll
      */
+    public Roll(Player n, int maximum)
+    {
+        // initialise instance variables
+        if (maximum < 1){
+            max = 1;
+        }
+        else{
+            max = maximum;
+        }
+        current = roll(); 
+        owner = n;
+    }
+    
     public Roll(int maximum)
     {
         // initialise instance variables
-        max = maximum; 
-        current = roll(); 
+        this(null, maximum);
+    }
+    
+    public Roll(Player n)
+    {
+        // initialise instance variables
+        this(n, 6);
+    }
+    
+    public Roll()
+    {
+        // initialise instance variables
+        this(null, 6);
     }
     
     public int roll()
@@ -44,13 +69,13 @@ public class Roll
         current = x;
     }
     
-    public void lowerBound(){
+    public void upperBound(){
         if(current > max){
             current = max;
         }
     }
     
-    public void upperBound(){
+    public void lowerBound(){
         if(current < 1){
             current = 1;
         }
@@ -62,6 +87,8 @@ public class Roll
         upperBound();
     }
     
-    
+    public Player getOwner(){
+        return owner;
+    }
     
 }

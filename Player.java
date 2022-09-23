@@ -7,18 +7,50 @@
  */
 public class Player
 {
-    // instance variables - replace the example below with your own
+    // The highest a player's HP can be and its current value, respectively.
     private int maxHp;
     private int hp;
     
+    // Home much damage a player deals.
     private int dmg;
     
+    // The base modifier to all of the player's rolls.
     private int diceMod;
+    
+    // Default values for the player, what they are reset to should they be changed in a brawl.
+    private int defHp;
+    private int defDmg;
+    private int defMod;
+    
+    // A player's name, which is returned when they win a brawl
+    private String name;
     
 
     /**
      * Constructor for objects of class Player
      */
+    public Player(String s, int h, int d, int m)
+    {
+        name = s;
+        if(h < 1){
+            defHp = 1;
+        }
+        else{
+            defHp = h;
+        }
+        hp = defHp;
+        maxHp = defHp;
+        if(d < 0){
+            defDmg = 0;
+        }
+        else{
+            defDmg = d;
+        }
+        dmg = d;
+        defMod = m;
+        diceMod = m;
+    }
+    
     public Player()
     {
         hp = 2;
@@ -27,12 +59,6 @@ public class Player
         diceMod = 0;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
     public int getMaxHp(){
         return maxHp;
     }
@@ -73,7 +99,10 @@ public class Player
     }
     
     public void reset(){
-        hp = maxHp;
+        hp = defHp;
+        maxHp = defHp;
+        dmg = defDmg;
+        diceMod = defMod;
     }
     
     public void heal(int h){
@@ -83,4 +112,18 @@ public class Player
         upperBoundHp();
     }
     
+    public String getName(){
+        return name;
+    }
+    
+    // Lets a player roll a dice
+    public Roll roll(int maximum){
+         Roll r = new Roll(this, maximum);
+         r.modifyCurrent(diceMod);
+         return r;
+    }
+    
+    public Roll roll(){
+        return new Roll(this);
+    }
 }
