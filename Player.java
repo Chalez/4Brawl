@@ -53,6 +53,7 @@ public class Player
     
     public Player()
     {
+        name = "Default";
         hp = 2;
         maxHp = 2;
         dmg = 1;

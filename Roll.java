@@ -2,10 +2,8 @@
 import java.util.Random;
 
 /**
- * Write a description of class Roll here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * A sigular roll of a dice, which is owned by a player.
+ * This isn't a dice which can be rolled muliple times- once it is used, it is discarded.
  */
 public class Roll
 {
@@ -14,9 +12,7 @@ public class Roll
     private int current;
     private Player owner;
 
-    /**
-     * Constructor for objects of class Roll
-     */
+    // Full Constructor
     public Roll(Player n, int maximum)
     {
         // initialise instance variables
@@ -26,67 +22,74 @@ public class Roll
         else{
             max = maximum;
         }
-        current = roll(); 
+        roll(); 
         owner = n;
     }
     
+    // Constructor with only maximum
     public Roll(int maximum)
     {
         // initialise instance variables
         this(null, maximum);
     }
     
+    // Constructor with only owner
     public Roll(Player n)
     {
         // initialise instance variables
         this(n, 6);
     }
     
+    // Default constructor
     public Roll()
     {
         // initialise instance variables
         this(null, 6);
     }
     
-    public int roll()
+    // Generates a random number for the roll.
+    // Only called when made or for "reroll" effects
+    public void roll()
     {
-        return (int) (Math.random() * this.max + 1);
+        current = (int) (Math.random() * this.max + 1);
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
+    // Returns the roll's value
     public int getCurrent()
     {
         return current;
     }
     
+    // Sets the roll's current value
     public void setCurrent(int x)
     {
         current = x;
+        upperBound();
+        lowerBound();
     }
     
+    // Sets the value to the maximum value if it would be higher
     public void upperBound(){
         if(current > max){
             current = max;
         }
     }
     
+    // Sets the value to 1 if it would be lower
     public void lowerBound(){
         if(current < 1){
             current = 1;
         }
     }
     
+    // Adds or subtracts from the current value
     public void modifyCurrent(int modifier){
         current += modifier;
         lowerBound();
         upperBound();
     }
     
+    // Returns the player who owns the roll
     public Player getOwner(){
         return owner;
     }
