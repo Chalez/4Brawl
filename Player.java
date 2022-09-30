@@ -51,13 +51,14 @@ public class Player
         diceMod = m;
     }
     
+    public Player(String s)
+    {
+        this(s, 2, 1, 0);
+    }
+    
     public Player()
     {
-        name = "Default";
-        hp = 2;
-        maxHp = 2;
-        dmg = 1;
-        diceMod = 0;
+        this("Default", 2, 1, 0);
     }
 
     public int getMaxHp(){
@@ -72,6 +73,36 @@ public class Player
         return dmg;
     }
     
+    public int getMod(){
+        return diceMod;
+    }
+    
+    public void setMaxHp(int a){
+        if(a >= 0){
+            maxHp = a;
+        }
+        upperBoundHp();
+        lowerBoundHp();
+    }
+    
+    public void setHp(int a){
+        if(a >= 0){
+            hp = a;
+        }
+        upperBoundHp();
+        lowerBoundHp();
+    }
+    
+    public void setDmg(int a){
+        if(a >= 0){
+            dmg = a;
+        }
+    }
+    
+    public void setMod(int a){
+        diceMod = a;
+    }
+    
     public void takeDmg(int dmgFromPlayer){
         if (dmgFromPlayer > 0){
             hp -= dmgFromPlayer;
@@ -80,7 +111,9 @@ public class Player
     }
     
     public void dealDmg(Player p){
-        p.takeDmg(this.dmg);
+        if(p != this){
+            p.takeDmg(this.dmg);
+        }
     }
     
     public void upperBoundHp(){
@@ -107,7 +140,7 @@ public class Player
     }
     
     public void heal(int h){
-        if (h > 0){
+        if (h > 0 && !this.isDead()){
             hp += h;
         }
         upperBoundHp();
@@ -125,6 +158,8 @@ public class Player
     }
     
     public Roll roll(){
-        return new Roll(this);
+        Roll r = new Roll(this, 6);
+         r.modifyCurrent(diceMod);
+         return r;
     }
 }
