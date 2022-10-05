@@ -158,8 +158,6 @@ public class Player
     }
     
     public Roll roll(){
-        Roll r = new Roll(this, 6);
-         r.modifyCurrent(diceMod);
-         return r;
+        return roll(6);
     }
 }
