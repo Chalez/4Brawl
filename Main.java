@@ -7,9 +7,16 @@ public class Main
     public static void sampleMethod()
     {
         Runner r = new Runner();
+        Player a = new Player("Player A", 3, 1, 0);
+        Player b = new Player("Player B", 2, 1, 1);
+        Player c = new Player("Player C", 2, 1, 0);
+        Player d = new Player("Player D", 2, 1, 0);
+        Player e = new Player("Player E", 2, 1, 0);
+        Player f = new Player("Player F", 2, 1, 0);
+        
+        Brawl q = new Brawl(new Player[]{a,b,c});
         for (int i = 0; i < 9999; i++){
-            Roll a = new Roll(-2);
-            r.addResult(String.valueOf(a.getCurrent()));
+            r.addResult(q.run());
         }
         // r.addResult("a");
         // r.addResult("b");

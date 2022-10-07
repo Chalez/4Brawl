@@ -8,26 +8,68 @@
 public class Brawl
 {
     // instance variables - replace the example below with your own
-    private int x;
+    Player[] players;
 
     /**
      * Constructor for objects of class Brawl
      */
-    public Brawl()
+    public Brawl(Player[] p)
     {
-        // initialise instance variables
-        x = 0;
+        players = p;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    public String run(){
+        resetPlayers();
+        boolean flag = true;
+        while(flag){
+            int count = livingPlayers();
+            int q = 0;
+            
+            if(count == 0){
+                return "Draw";
+            }
+            else if(count == 1){
+                return lastPlayer().getName();
+            }
+            
+            Roll[] r = new Roll[count];
+            
+            for(int i = 0; i < players.length; i++){
+                if(!players[i].isDead()){
+                    r[q] = players[i].roll();
+                    q++;
+                }
+                //r[i] = players[i].roll();
+            }
+            new Round(r).run();
+        }
+        
+        return "Player A";
+    }
+    
+    public void resetPlayers(){
+        for(int i = 0; i < players.length; i++){
+            players[i].reset();
+        }
+    }
+    
+    public int livingPlayers(){
+        int count = 0;
+        for(int i = 0; i < players.length; i++){
+            if(!players[i].isDead()){
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    //returns the first living player it finds. Call only if 1 left
+    public Player lastPlayer(){
+        for(int i = 0; i < players.length; i++){
+            if(!players[i].isDead()){
+                return players[i];
+            }
+        }
+        return null;
     }
 }

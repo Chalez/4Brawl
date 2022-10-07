@@ -57,7 +57,7 @@ public class Round
         }
 
 
-        System.out.println("highest is " + highest + " at " + highestIndex);
+        //System.out.println("highest is " + highest + " at " + highestIndex);
 
         return highest;
     }
@@ -91,7 +91,7 @@ public class Round
 
         }
 
-        System.out.println("lowest is " + lowest + " at " + lowestIndex);
+        //System.out.println("lowest is " + lowest + " at " + lowestIndex);
 
         return lowest;
     }
