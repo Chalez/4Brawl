@@ -53,6 +53,7 @@ public class Brawl
         }
     }
     
+    // Returns the number of players currently alive in the brawl
     public int livingPlayers(){
         int count = 0;
         for(int i = 0; i < players.length; i++){

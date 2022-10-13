@@ -5,25 +5,17 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-
-
 import java.util.ArrayList;
-
-
-
-
-
 
 public class Round
 {
-
     Roll[] playerRolls;
-    
-
+   
     public Round(Roll[] rolls){
         playerRolls = rolls;
     }
     
+    // Runs the round, causing all highest rolls to damage lowest rolls.
     void run(){
         ArrayList<Integer> highest = new ArrayList<Integer>();
         ArrayList<Integer> lowest = new ArrayList<Integer>();
@@ -40,29 +32,38 @@ public class Round
         }
     }
 
+    // Finds the highest value in the array of rolls
     int findHighest(){
-
         int highest = -1; 
         int i;
         int highestIndex = 0;
         
-
         for(i = 0; i < playerRolls.length; i++){
-
             if(playerRolls[i].getCurrent() > highest){
                 highest = playerRolls[i].getCurrent();
                 highestIndex = i;
             }
-
         }
-
-
-        //System.out.println("highest is " + highest + " at " + highestIndex);
-
         return highest;
     }
-
-    //I realized the highest and lowest indices classes were the same thing- so, I generalized.
+    
+    // Finds the lowest value in the array of rolls
+    int findLowest(){
+        int lowest = 9999; 
+        int i;
+        int lowestIndex = 0;
+        
+        for(i = 0; i < playerRolls.length; i++){
+            if(playerRolls[i].getCurrent() < lowest){
+                lowest = playerRolls[i].getCurrent();
+                lowestIndex = i;
+            }
+        }
+        return lowest;
+    }
+    
+    // Puts all instances of a given value roll into an ArrayList
+    // The name is slightly misleading, as it can take and find any value- it's just originally meant for the highest and lowest to be plugged in.
     ArrayList<Integer> getIndices(int target){
 
         ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -75,42 +76,4 @@ public class Round
 
         return indices;
     }
-
-    int findLowest(){
-        int lowest = 9999; 
-        int i;
-        int lowestIndex = 0;
-        
-
-        for(i = 0; i < playerRolls.length; i++){
-
-            if(playerRolls[i].getCurrent() < lowest){
-                lowest = playerRolls[i].getCurrent();
-                lowestIndex = i;
-            }
-
-        }
-
-        //System.out.println("lowest is " + lowest + " at " + lowestIndex);
-
-        return lowest;
-    }
-    
-    // public static void main(String[] args){
-
-        // int[] sample = {5, 3, 1, 1, 2, 1, 4, 5, 5, 4, 5};
-
-        // Round r = new Round(sample);
-
-        // ArrayList<Integer> highestList = r.getIndices(r.findHighest());
-
-        // ArrayList<Integer> lowestList =  r.getIndices(r.findLowest());
-
-        // System.out.println(highestList.toString());
-
-        // System.out.println();
-
-        // System.out.println(lowestList.toString());
-
-    // }
 }
