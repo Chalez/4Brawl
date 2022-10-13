@@ -1,9 +1,8 @@
 
 /**
- * Write a description of class Player here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * A Player has multiple stats which determine its performance in brawls...
+ * and a name which is returned if they win.
+ * Players can roll dice, take damage, and damage other players.
  */
 public class Player
 {
@@ -26,9 +25,7 @@ public class Player
     private String name;
     
 
-    /**
-     * Constructor for objects of class Player
-     */
+    // Constructor with Name, Health, Damage, and Modifier
     public Player(String s, int h, int d, int m)
     {
         name = s;
@@ -51,32 +48,39 @@ public class Player
         diceMod = m;
     }
     
+    // Default stats with only a Name
     public Player(String s)
     {
         this(s, 2, 1, 0);
     }
     
+    // Default Constructor
     public Player()
     {
         this("Default", 2, 1, 0);
     }
-
+    
+    // Returns the player's max HP
     public int getMaxHp(){
         return maxHp;
     }
     
+    // Returns the player's current HP
     public int getHp(){
         return hp;
     }
     
+    //Returns the player's DMG stat
     public int getDmg(){
         return dmg;
     }
     
+    // Returns the player's dice modifier
     public int getMod(){
         return diceMod;
     }
     
+    // Sets the player's max HP, should it change from an effect
     public void setMaxHp(int a){
         if(a >= 0){
             maxHp = a;
@@ -85,6 +89,7 @@ public class Player
         lowerBoundHp();
     }
     
+    // Sets the player's current HP
     public void setHp(int a){
         if(a >= 0){
             hp = a;
@@ -93,16 +98,19 @@ public class Player
         lowerBoundHp();
     }
     
+    // Sets a player's current DMG
     public void setDmg(int a){
         if(a >= 0){
             dmg = a;
         }
     }
     
+    // Sets the player's current dice modifier
     public void setMod(int a){
         diceMod = a;
     }
     
+    // Takes a positive nonzero amount of damage
     public void takeDmg(int dmgFromPlayer){
         if (dmgFromPlayer > 0){
             hp -= dmgFromPlayer;
@@ -110,28 +118,33 @@ public class Player
         lowerBoundHp();
     }
     
+    // Deals damage to another player, causing them to take damage equal to your stat.
     public void dealDmg(Player p){
         if(p != this){
             p.takeDmg(this.dmg);
         }
     }
     
+    // Makes sure your HP isn't too high
     public void upperBoundHp(){
         if(hp > maxHp){
             hp = maxHp;
         }
     }
     
+    // Makes sure your HP isn't too low
     public void lowerBoundHp(){
         if(hp < 0){
             hp = 0;
         }
     }
     
+    // Returns whether the player is dead (At 0 HP)
     public boolean isDead(){
         return (hp == 0);
     }
     
+    // Sets a player's stats back to the default
     public void reset(){
         hp = defHp;
         maxHp = defHp;
@@ -139,6 +152,7 @@ public class Player
         diceMod = defMod;
     }
     
+    // Heals the player by an amount
     public void heal(int h){
         if (h > 0 && !this.isDead()){
             hp += h;
@@ -146,6 +160,7 @@ public class Player
         upperBoundHp();
     }
     
+    // Returns the player's name
     public String getName(){
         return name;
     }
@@ -157,6 +172,7 @@ public class Player
          return r;
     }
     
+    // Default for the roll method
     public Roll roll(){
         return roll(6);
     }

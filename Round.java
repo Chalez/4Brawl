@@ -1,28 +1,29 @@
 
 /**
- * Write a description of class Round here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * A Round is a piece of a brawl where every player rolls a dice.
+ * Players who roll the highest damage players who roll the lowest.
  */
 import java.util.ArrayList;
 
 public class Round
 {
     Roll[] playerRolls;
-   
+    // Constructor
     public Round(Roll[] rolls){
         playerRolls = rolls;
     }
     
     // Runs the round, causing all highest rolls to damage lowest rolls.
     void run(){
+        // Creates arraylists to store the highest and lowest rolls
         ArrayList<Integer> highest = new ArrayList<Integer>();
         ArrayList<Integer> lowest = new ArrayList<Integer>();
         
+        // Puts the highest and lowest rolls into the arraylists
         highest = getIndices(findHighest());
         lowest = getIndices(findLowest());
         
+        // All the highest damage all the lowest
         for(int i = 0; i < highest.size(); i++){
             for(int j = 0; j < lowest.size(); j++){
                 // This line is a nightmare
