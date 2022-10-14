@@ -7,9 +7,11 @@ import java.util.Random;
  */
 public class Roll
 {
-    // instance variables - replace the example below with your own
+    // The highest possible value of the roll, or its "size".
     private int max;
+    // The current value of the roll
     private int current;
+    // The player who owns the roll
     private Player owner;
 
     // Full Constructor
