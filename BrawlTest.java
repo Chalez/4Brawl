@@ -49,4 +49,30 @@ public class BrawlTest
         assertEquals(a.getHp(), 2);
         assertEquals(b.getHp(), 2);
     }
+    
+    @Test
+    public void resetDmg(){
+        a.setDmg(3);
+        a.setDmg(3);
+        
+        Brawl q = new Brawl(new Player[]{a, b});
+        q.resetPlayers();
+        
+        assertEquals(a.getDmg(), 1);
+        assertEquals(b.getDmg(), 1);
+    }
+    
+    @Test
+    public void resetMod(){
+        a.setMod(2);
+        a.setMod(2);
+        
+        Brawl q = new Brawl(new Player[]{a, b});
+        q.resetPlayers();
+        
+        assertEquals(a.getMod(), 0);
+        assertEquals(b.getMod(), 0);
+    }
+    
+    
 }
