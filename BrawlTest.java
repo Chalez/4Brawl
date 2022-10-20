@@ -74,5 +74,20 @@ public class BrawlTest
         assertEquals(b.getMod(), 0);
     }
     
+    @Test
+    public void livingCount(){
+        Brawl q = new Brawl(new Player[]{a, b});
+        assertEquals(q.livingPlayers(), 2);
+        a.takeDmg(2);
+        assertEquals(q.livingPlayers(), 1);
+        b.takeDmg(2);
+        assertEquals(q.livingPlayers(), 0);
+    }
     
+    @Test
+    public void lastPlayer(){
+        Brawl q = new Brawl(new Player[]{a, b});
+        a.takeDmg(2);
+        assertEquals(q.lastPlayer(), b);
+    }
 }
