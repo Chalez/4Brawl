@@ -53,7 +53,7 @@ public class BrawlTest
     @Test
     public void resetDmg(){
         a.setDmg(3);
-        a.setDmg(3);
+        b.setDmg(3);
         
         Brawl q = new Brawl(new Player[]{a, b});
         q.resetPlayers();
