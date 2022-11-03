@@ -21,15 +21,21 @@ public class Brawl
     public String run(){
         resetPlayers();
         boolean flag = true;
+        int roundsCount = 0;
         while(flag){
             int count = livingPlayers();
             int q = 0;
+            roundsCount++;
             
             if(count == 0){
                 return "Draw";
             }
             else if(count == 1){
                 return lastPlayer().getName();
+            }
+            
+            if (roundsCount > 50){
+                return "Softlock";
             }
             
             Roll[] r = new Roll[count];
