@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A Player has multiple stats which determine its performance in brawls...
@@ -21,12 +23,21 @@ public class Player
     private int defDmg;
     private int defMod;
     
+    // The size of dice the player rolls.
+    // Since this is changed so little, doing so is limited to Attributes.
+    private int diceSize;
+    
+    // Ticks up every time the player rolls
+    private int rollTimer;
+    
     // A player's name, which is returned when they win a brawl
     private String name;
     
-
-    // Constructor with Name, Health, Damage, and Modifier
-    public Player(String s, int h, int d, int m)
+    // The runner which stores Attributes, additional modifiers.
+    private Runner runner;
+    private HashMap attributes;
+    
+    public Player(String s, int h, int d, int m, String[] atts)
     {
         name = s;
         if(h < 1){
@@ -46,6 +57,26 @@ public class Player
         dmg = d;
         defMod = m;
         diceMod = m;
+        
+        diceSize = 6;
+        
+        rollTimer = -1;
+        
+        runner = new Runner();
+        for(int i = 0; i < atts.length; i++){
+            runner.addResult(atts[i]);
+        }
+        attributes = runner.getMap();
+        
+        if(hasAttribute("timedD8") || hasAttribute("D8")){
+            diceSize = 8;
+        }
+    }
+
+    // Constructor with Name, Health, Damage, and Modifier
+    public Player(String s, int h, int d, int m)
+    {
+        this(s, h, d, m, new String[0]);
     }
     
     // Default stats with only a Name
@@ -150,6 +181,7 @@ public class Player
         maxHp = defHp;
         dmg = defDmg;
         diceMod = defMod;
+        rollTimer = -1;
     }
     
     // Heals the player by an amount
@@ -167,13 +199,41 @@ public class Player
     
     // Lets a player roll a dice
     public Roll roll(int maximum){
-         Roll r = new Roll(this, maximum);
-         r.modifyCurrent(diceMod);
+        rollTimer++;
+        // Because damage is tied to the player not the roll, but dice size is roll based...
+        // All timed mods happen before the roll.
+        
+        if(rollTimer == getAttribute("timedDmgDown")){
+             dmg--;
+         } 
+        if(rollTimer == getAttribute("timedModDown")){
+             diceMod--;
+        } 
+        if(rollTimer == getAttribute("timedD8")){
+             diceSize--;
+             diceSize--;
+        } 
+        
+        Roll r = new Roll(this, maximum);
+        r.modifyCurrent(diceMod);
+        
          return r;
     }
     
     // Default for the roll method
     public Roll roll(){
-        return roll(6);
+        return roll(diceSize);
+    }
+    
+    public boolean hasAttribute(String s){
+        if(((AtomicInteger)attributes.getOrDefault(s, new AtomicInteger(0))).intValue() == 0){
+            return false;
+        }
+        return true;
+    }
+    
+    public int getAttribute(String s){
+        AtomicInteger x = (AtomicInteger)attributes.getOrDefault(s, new AtomicInteger(-1));
+        return x.intValue();
     }
 }
