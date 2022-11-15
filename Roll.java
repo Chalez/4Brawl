@@ -96,4 +96,7 @@ public class Roll
         return owner;
     }
     
+    public String toString(){
+        return "" + current;
+    }
 }

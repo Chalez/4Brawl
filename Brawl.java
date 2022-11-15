@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 /**
  * Write a description of class Brawl here.
@@ -9,13 +10,20 @@ public class Brawl
 {
     // instance variables - replace the example below with your own
     Player[] players;
+    boolean desc;
 
     /**
      * Constructor for objects of class Brawl
      */
-    public Brawl(Player[] p)
+    public Brawl(Player[] p, boolean d)
     {
         players = p;
+        desc = d;
+    }
+    
+    public Brawl(Player[] p)
+    {
+        this(p, false);
     }
 
     public String run(){
@@ -28,13 +36,16 @@ public class Brawl
             roundsCount++;
             
             if(count == 0){
+                Helper.printIf(desc, "All players are dead- Draw.");
                 return "Draw";
             }
             else if(count == 1){
+                Helper.printIf(desc, lastPlayer().getName() + " Wins.");
                 return lastPlayer().getName();
             }
             
             if (roundsCount > 50){
+                Helper.printIf(desc, "Too many rounds, softlock prevention triggered.");
                 return "Softlock";
             }
             
@@ -47,10 +58,11 @@ public class Brawl
                 }
                 //r[i] = players[i].roll();
             }
-            new Round(r).run();
+            Helper.printIf(desc, "Round " + roundsCount + ": " + Arrays.toString(r));
+            new Round(r, desc).run();
         }
         
-        return "Player A";
+        return "Default (Something broke?)";
     }
     
     public void resetPlayers(){

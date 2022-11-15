@@ -142,18 +142,30 @@ public class Player
     }
     
     // Takes a positive nonzero amount of damage
-    public void takeDmg(int dmgFromPlayer){
+    public void takeDmg(int dmgFromPlayer, boolean d){
         if (dmgFromPlayer > 0){
             hp -= dmgFromPlayer;
         }
         lowerBoundHp();
+        
+        if(this.isDead()){
+            Helper.printIf(d, getName() + " Dies.");
+        }
+    }
+    
+    public void takeDmg(int dmgFromPlayer){
+        takeDmg(dmgFromPlayer, false);
     }
     
     // Deals damage to another player, causing them to take damage equal to your stat.
-    public void dealDmg(Player p){
+    public void dealDmg(Player p, boolean d){
         if(p != this){
-            p.takeDmg(this.dmg);
+            p.takeDmg(this.dmg, d);
         }
+    }
+    
+    public void dealDmg(Player p){
+        dealDmg(p, false);
     }
     
     // Makes sure your HP isn't too high

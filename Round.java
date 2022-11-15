@@ -8,9 +8,16 @@ import java.util.ArrayList;
 public class Round
 {
     Roll[] playerRolls;
+    boolean desc;
+    
     // Constructor
-    public Round(Roll[] rolls){
+    public Round(Roll[] rolls, boolean d){
         playerRolls = rolls;
+        desc = d;
+    }
+    
+    public Round(Roll[] rolls){
+        this(rolls, false);
     }
     
     // Runs the round, causing all highest rolls to damage lowest rolls.
@@ -26,9 +33,16 @@ public class Round
         // All the highest damage all the lowest
         for(int i = 0; i < highest.size(); i++){
             for(int j = 0; j < lowest.size(); j++){
+                Helper.printIf( desc,
+                                playerRolls[highest.get(i).intValue()].getOwner().getName()
+                                + " deals " + 
+                                playerRolls[highest.get(i).intValue()].getOwner().getDmg()
+                                + " damage to " +
+                                playerRolls[lowest.get(j).intValue()].getOwner().getName()
+                                + ".");
                 // This line is a nightmare
                 // It gets both players from the rolls from the array based on the numbers in arraylists
-                playerRolls[highest.get(i).intValue()].getOwner().dealDmg(playerRolls[lowest.get(j).intValue()].getOwner());
+                playerRolls[highest.get(i).intValue()].getOwner().dealDmg(playerRolls[lowest.get(j).intValue()].getOwner(), desc);
             }
         }
     }
