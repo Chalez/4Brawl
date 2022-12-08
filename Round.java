@@ -10,17 +10,18 @@ public class Round
     Roll[] playerRolls;
     boolean desc;
     
-    // Constructor
+    /** Full Constructor, with an array of rolls and whether the round is printed. */
     public Round(Roll[] rolls, boolean d){
         playerRolls = rolls;
         desc = d;
     }
     
+    /** Constructor with an array of rolls and printing turned off. */
     public Round(Roll[] rolls){
         this(rolls, false);
     }
     
-    // Runs the round, causing all highest rolls to damage lowest rolls.
+    /** Resolves the round, causing players who rolled the highest to damage players who rolled the lowest. */
     void run(){
         // Creates arraylists to store the highest and lowest rolls
         ArrayList<Integer> highest = new ArrayList<Integer>();
@@ -30,10 +31,26 @@ public class Round
         highest = getIndices(findHighest());
         lowest = getIndices(findLowest());
         
+        // Detects a player with Tiebreak and adjusts arrays accordingly
+        // It is assumed only one player can have tiebreak, as it is character exclusive
+        int callowInd = -1;
+        for(int i = 0; i < playerRolls.length; i++){
+            if(playerRolls[i].getOwner().getAttribute("tiebreak") != -1){
+                callowInd = i;
+            }
+        }
+        if(callowInd != -1 && playerRolls[callowInd].getCurrent() == findHighest()){
+            highest = new ArrayList<Integer>();
+            highest.add(callowInd);
+        }
+        if(callowInd != -1 && playerRolls[callowInd].getCurrent() == findLowest()){
+            lowest.remove(playerRolls[callowInd]);
+        }
+        
         // All the highest damage all the lowest
         for(int i = 0; i < highest.size(); i++){
             for(int j = 0; j < lowest.size(); j++){
-                Helper.printIf( desc,
+                Helper.printIf( desc && i != j,
                                 playerRolls[highest.get(i).intValue()].getOwner().getName()
                                 + " deals " + 
                                 playerRolls[highest.get(i).intValue()].getOwner().getDmg()
@@ -47,7 +64,7 @@ public class Round
         }
     }
 
-    // Finds the highest value in the array of rolls
+    /** Finds the highest value in the array of rolls. */
     int findHighest(){
         int highest = -1; 
         int i;
@@ -62,7 +79,7 @@ public class Round
         return highest;
     }
     
-    // Finds the lowest value in the array of rolls
+    /** Finds the lowest value in the array of rolls. */
     int findLowest(){
         int lowest = 9999; 
         int i;
@@ -77,8 +94,7 @@ public class Round
         return lowest;
     }
     
-    // Puts all instances of a given value roll into an ArrayList
-    // The name is slightly misleading, as it can take and find any value- it's just originally meant for the highest and lowest to be plugged in.
+    /** Returns an arraylist containing the index of every roll in the base array with a given value. */
     ArrayList<Integer> getIndices(int target){
 
         ArrayList<Integer> indices = new ArrayList<Integer>();

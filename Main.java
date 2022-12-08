@@ -1,41 +1,70 @@
 
 /**
- * A playground to test that rolling and runner work
+ * The main method which creates and runs the brawls.
+ * This is the one you should be editing!
  */
 public class Main
 {
-    public static void sampleMethod()
+    /**
+    * Simulates a brawl defined by the code many times, then prints the results.
+    */
+    public static void multiTest()
     {
+        // The Runner is what tracks the result of each brawl.
         Runner r = new Runner();
-        Player a = new Player("Player A", 2, 2, 0, new String[]{"timedDmgDown"});
+        
+        // The number of brawls simulated to find the odds.
+        // THIS CAN BE SAFELY CHANGED
+        int iterations = 10000;
+        
+        // A list of players which could be included in brawls.
+        // The order of the constructor is name, health, dmg, + or - to rolls...
+        // ... And an optional list of attributes for more complex effects.
+        // THESE CAN BE SAFELY CHANGED
+        Player a = new Player("Player A", 2, 1, 0);
         Player b = new Player("Player B", 2, 1, 0);
         Player c = new Player("Player C", 2, 1, 0);
-        Player d = new Player("Player D", 2, 2, 0);
-        Player e = new Player("Player E", 2, 1, 0);
-        Player f = new Player("Player F", 2, 1, 0);
+        Player d = new Player("Player D", 3, 2, -1);
+        Player e = new Player("Player E", 2, 1, 0, new String[]{"tiebreak"});
+        Player f = new Player("Player F", 2, 1, 1, new String[]{"timedModDown", "timedModDown"});
         
-        Brawl q = new Brawl(new Player[]{c, a});
-        for (int i = 0; i < 10000; i++){
+        // Creates a brawl using the players defined above
+        // THE NUMBER OF PLAYERS AND WHICH PLAYERS PARTICIPATE CAN BE SAFELY CHANGED
+        Brawl q = new Brawl(new Player[]{a, b, c, d});
+        
+        // The brawl is run multiple times and the results of each are stored.
+        for (int i = 0; i < iterations; i++){
             r.addResult(q.run());
         }
-        // r.addResult("a");
-        // r.addResult("b");
-        // r.addResult("c");
-        // r.addResult("d");
+        
+        // The results are printed.
         r.print();
         System.out.println();
     }
     
+    /**
+    * Prints a detailed summary of a single simulated brawl defined by the code.
+    */
     public static void descTest(){
+        // The Runner is what tracks the result of each brawl.
         Runner r = new Runner();
-        Player a = new Player("Player A", 2, 2, 0, new String[]{"timedDmgDown"});
+        
+        // A list of players which could be included in brawls.
+        // The order of the constructor is name, health, dmg, + or - to rolls...
+        // ... And an optional list of attributes for more complex effects.
+        // THESE CAN BE SAFELY CHANGED
+        Player a = new Player("Player A", 2, 1, 0);
         Player b = new Player("Player B", 2, 1, 0);
         Player c = new Player("Player C", 2, 1, 0);
-        Player d = new Player("Player D", 2, 2, 0);
-        Player e = new Player("Player E", 2, 1, 0);
-        Player f = new Player("Player F", 2, 1, 0);
+        Player d = new Player("Player D", 3, 2, -1);
+        Player e = new Player("Player E", 2, 1, 0, new String[]{"tiebreak"});
+        Player f = new Player("Player F", 2, 1, 1, new String[]{"timedModDown", "timedModDown"});
         
-        Brawl q = new Brawl(new Player[]{a, b, c}, true);
+        // Creates a brawl using the players defined above
+        // THE NUMBER OF PLAYERS AND WHICH PLAYERS PARTICIPATE CAN BE SAFELY CHANGED
+        Brawl q = new Brawl(new Player[]{b, c}, true);
+        
+        // The results are printed.
         q.run();
         System.out.println();
     }

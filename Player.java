@@ -37,6 +37,11 @@ public class Player
     private Runner runner;
     private HashMap attributes;
     
+    // The number of times a player can add 1 to their rolls. Based on multiAddOne attribute
+    private int plusOnes;
+    private int defPlusOnes;
+    
+    /** Full Constructor, with a name, stats, and attributes. */
     public Player(String s, int h, int d, int m, String[] atts)
     {
         name = s;
@@ -71,47 +76,50 @@ public class Player
         if(hasAttribute("timedD8") || hasAttribute("D8")){
             diceSize = 8;
         }
+        
+        defPlusOnes = getAttribute("multiAddOne");
+        plusOnes = defPlusOnes;
     }
 
-    // Constructor with Name, Health, Damage, and Modifier
+    /** Constructor, with a name and stats. */
     public Player(String s, int h, int d, int m)
     {
         this(s, h, d, m, new String[0]);
     }
     
-    // Default stats with only a Name
+    /** Constructor with just a name. */
     public Player(String s)
     {
         this(s, 2, 1, 0);
     }
     
-    // Default Constructor
+    /** Default constructor with a default name and stats. */
     public Player()
     {
         this("Default", 2, 1, 0);
     }
     
-    // Returns the player's max HP
+    /** Returns the player's maximum hp. */
     public int getMaxHp(){
         return maxHp;
     }
     
-    // Returns the player's current HP
+    /** Returns the player's current hp. */
     public int getHp(){
         return hp;
     }
     
-    //Returns the player's DMG stat
+    /** Returns the player's current dmg. */
     public int getDmg(){
         return dmg;
     }
     
-    // Returns the player's dice modifier
+    /** Returns the player's current dice modifier. */
     public int getMod(){
         return diceMod;
     }
     
-    // Sets the player's max HP, should it change from an effect
+    /** Changes a player's max hp. Currently not used, but effects which do so exist. */
     public void setMaxHp(int a){
         if(a >= 0){
             maxHp = a;
@@ -120,7 +128,7 @@ public class Player
         lowerBoundHp();
     }
     
-    // Sets the player's current HP
+    /** Sets the player's current hp. */
     public void setHp(int a){
         if(a >= 0){
             hp = a;
@@ -129,19 +137,19 @@ public class Player
         lowerBoundHp();
     }
     
-    // Sets a player's current DMG
+    /** Sets the player's current dmg. */
     public void setDmg(int a){
         if(a >= 0){
             dmg = a;
         }
     }
     
-    // Sets the player's current dice modifier
+    /** Sets the player's current dice mod. */
     public void setMod(int a){
         diceMod = a;
     }
     
-    // Takes a positive nonzero amount of damage
+    /** Causes a player to take damage, and prints it if d is true. */
     public void takeDmg(int dmgFromPlayer, boolean d){
         if (dmgFromPlayer > 0){
             hp -= dmgFromPlayer;
@@ -153,50 +161,53 @@ public class Player
         }
     }
     
+    /** Causes the player to take damage. */
     public void takeDmg(int dmgFromPlayer){
         takeDmg(dmgFromPlayer, false);
     }
     
-    // Deals damage to another player, causing them to take damage equal to your stat.
+    /** Deals damage to another player equal to dmg, and prints it if d is true. */
     public void dealDmg(Player p, boolean d){
         if(p != this){
             p.takeDmg(this.dmg, d);
         }
     }
     
+    /** Deals damage to another player equal to dmg. */
     public void dealDmg(Player p){
         dealDmg(p, false);
     }
     
-    // Makes sure your HP isn't too high
+    /** Sets the player's current hp to the maximum if it is higher. */
     public void upperBoundHp(){
         if(hp > maxHp){
             hp = maxHp;
         }
     }
     
-    // Makes sure your HP isn't too low
+    /** Sets the player's current hp to 0 if it is lower. */
     public void lowerBoundHp(){
         if(hp < 0){
             hp = 0;
         }
     }
     
-    // Returns whether the player is dead (At 0 HP)
+    /** Returns whether the player is dead (at 0hp). */
     public boolean isDead(){
         return (hp == 0);
     }
     
-    // Sets a player's stats back to the default
+    /** Resets all of the player's stats to their default values. */
     public void reset(){
         hp = defHp;
         maxHp = defHp;
         dmg = defDmg;
         diceMod = defMod;
         rollTimer = -1;
+        plusOnes = defPlusOnes;
     }
     
-    // Heals the player by an amount
+    /** Heals the player by a nonnegative amount. Currently not used, but effects which do so exist. */
     public void heal(int h){
         if (h > 0 && !this.isDead()){
             hp += h;
@@ -204,12 +215,12 @@ public class Player
         upperBoundHp();
     }
     
-    // Returns the player's name
+    /** Returns the name of the player as a string. */
     public String getName(){
         return name;
     }
     
-    // Lets a player roll a dice
+    /** Returns a new roll owned by the player, with a size based on input. */
     public Roll roll(int maximum){
         rollTimer++;
         // Because damage is tied to the player not the roll, but dice size is roll based...
@@ -232,11 +243,12 @@ public class Player
          return r;
     }
     
-    // Default for the roll method
+    /** Returns a new roll owned by the player, with a size based on the player's attributes. */
     public Roll roll(){
         return roll(diceSize);
     }
     
+    /** Returns true if the player has the given attribute, returns false otherwise. */
     public boolean hasAttribute(String s){
         if(((AtomicInteger)attributes.getOrDefault(s, new AtomicInteger(0))).intValue() == 0){
             return false;
@@ -244,8 +256,31 @@ public class Player
         return true;
     }
     
+    /** Returns the value of an attribute, or -1 if the attribute is not present. */
     public int getAttribute(String s){
         AtomicInteger x = (AtomicInteger)attributes.getOrDefault(s, new AtomicInteger(-1));
         return x.intValue();
+    }
+    
+    /** Performs reactions to a set of rolls given an array of rolls and the index of the one belonging to the player. */
+    public void respond(int ownedIndex, Roll[] allRolls){
+        int lowestOther = 99;
+        for(int i = 0; i < allRolls.length; i++){
+            if(i != ownedIndex && allRolls[i].getCurrent() < lowestOther){
+                lowestOther = allRolls[i].getCurrent();
+            }
+        }
+        int rollsDif = lowestOther - allRolls[ownedIndex].getCurrent();
+        if( rollsDif > 0 && rollsDif <= plusOnes){
+            plusOnes -= rollsDif;
+            allRolls[ownedIndex].modifyCurrent(rollsDif);
+            //System.out.println("Added " + rollsDif);
+            rollsDif = lowestOther - allRolls[ownedIndex].getCurrent();
+        }
+        if( rollsDif == 0 && plusOnes > 0){
+            plusOnes--;
+            //System.out.println("Added 1");
+            allRolls[ownedIndex].modifyCurrent(1);
+        }
     }
 }

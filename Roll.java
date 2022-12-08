@@ -1,4 +1,3 @@
-
 import java.util.Random;
 
 /**
@@ -7,17 +6,16 @@ import java.util.Random;
  */
 public class Roll
 {
-    // The highest possible value of the roll, or its "size".
+    /** The highest possible value of the roll, or its "size". */
     private int max;
-    // The current value of the roll
+    /** The current value stored by the roll. */
     private int current;
-    // The player who owns the roll
+    /** The player who owns the roll. */
     private Player owner;
 
-    // Full Constructor
+    /** Full Constructor, with an owner and a max dice size. */
     public Roll(Player n, int maximum)
     {
-        // initialise instance variables
         if (maximum < 1){
             max = 1;
         }
@@ -28,41 +26,37 @@ public class Roll
         owner = n;
     }
     
-    // Constructor with only maximum
+    /** Constructor with just a maximum size defined. */
     public Roll(int maximum)
     {
-        // initialise instance variables
         this(null, maximum);
     }
     
-    // Constructor with only owner
+    /** Constructor with just an owner defined. */
     public Roll(Player n)
     {
-        // initialise instance variables
         this(n, 6);
     }
     
-    // Default constructor
+    /** Default constructor with a null owner and a default size of 6. */
     public Roll()
     {
-        // initialise instance variables
         this(null, 6);
     }
     
-    // Generates a random number for the roll.
-    // Only called when made or for "reroll" effects
+    /** Generates a random number for the roll. Currently only called on creation of the roll, but could also be used for reroll effects. */
     public void roll()
     {
         current = (int) (Math.random() * this.max + 1);
     }
 
-    // Returns the roll's value
+    /** Returns the current value of the roll. */
     public int getCurrent()
     {
         return current;
     }
     
-    // Sets the roll's current value
+    /** Sets the roll's value to a number. */
     public void setCurrent(int x)
     {
         current = x;
@@ -70,32 +64,33 @@ public class Roll
         lowerBound();
     }
     
-    // Sets the value to the maximum value if it would be higher
+    /** Sets the roll's value to its maximum size if it is higher. */
     public void upperBound(){
         if(current > max){
             current = max;
         }
     }
     
-    // Sets the value to 1 if it would be lower
+    /** Sets the roll's value to 1 if it is lower. */
     public void lowerBound(){
         if(current < 1){
             current = 1;
         }
     }
     
-    // Adds or subtracts from the current value
+    /** Adds to (or subtracts from, if negative) the roll's current value. */
     public void modifyCurrent(int modifier){
         current += modifier;
         lowerBound();
         upperBound();
     }
     
-    // Returns the player who owns the roll
+    /** Returns the player who owns the roll. */
     public Player getOwner(){
         return owner;
     }
     
+    /** Returns the roll's current value as a string. */
     public String toString(){
         return "" + current;
     }

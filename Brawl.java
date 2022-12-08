@@ -1,10 +1,7 @@
 import java.util.Arrays;
 
 /**
- * Write a description of class Brawl here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * The brawl itself, containing many players who take part in repeated rounds.
  */
 public class Brawl
 {
@@ -12,20 +9,20 @@ public class Brawl
     Player[] players;
     boolean desc;
 
-    /**
-     * Constructor for objects of class Brawl
-     */
+    /** Full Constructor, with an array of players and whether the brawl is printed. */
     public Brawl(Player[] p, boolean d)
     {
         players = p;
         desc = d;
     }
     
+    /** Constructor, with an array of players and printing turned off. */
     public Brawl(Player[] p)
     {
         this(p, false);
     }
 
+    /** Runs the brawl and returns the name of the winner. */
     public String run(){
         resetPlayers();
         boolean flag = true;
@@ -58,6 +55,11 @@ public class Brawl
                 }
                 //r[i] = players[i].roll();
             }
+            
+            for(int i = 0; i < r.length; i++){
+                r[i].getOwner().respond(i, r);
+            }
+            
             Helper.printIf(desc, "Round " + roundsCount + ": " + Arrays.toString(r));
             new Round(r, desc).run();
         }
@@ -65,13 +67,14 @@ public class Brawl
         return "Default (Something broke?)";
     }
     
+    /** Resets each player in the brawl to default. */
     public void resetPlayers(){
         for(int i = 0; i < players.length; i++){
             players[i].reset();
         }
     }
     
-    // Returns the number of players currently alive in the brawl
+    /** Returns the number of currently living players in the brawl. */
     public int livingPlayers(){
         int count = 0;
         for(int i = 0; i < players.length; i++){
@@ -82,7 +85,7 @@ public class Brawl
         return count;
     }
     
-    //returns the first living player it finds. Call only if 1 left
+    /** Returns the first living player in the array. Meant to be called when only 1 player is left. */
     public Player lastPlayer(){
         for(int i = 0; i < players.length; i++){
             if(!players[i].isDead()){
