@@ -6,10 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * The test class RoundTest.
- *
- * @author  (your name)
- * @version (a version number or a date)
+ * Tests each round which calculates who damages who.
  */
 public class RoundTest
 {
@@ -62,7 +59,7 @@ public class RoundTest
     {
     }
     
-    // One player damages the other player
+    /** One player damages another */
     @Test
     public void basicDamage(){
         Round r = new Round(new Roll[]{a, c});
@@ -71,7 +68,7 @@ public class RoundTest
         assertEquals(riggedHighC.getHp(), 2);
     }
     
-    // Both players damage each other, but not themselves
+    /** Both players each other, but not themselves */
     @Test
     public void twoSameNumbersLow(){
         Round r = new Round(new Roll[]{a, b});
@@ -80,7 +77,7 @@ public class RoundTest
         assertEquals(riggedOneB.getHp(), 1);
     }
     
-    // Both players damage each other, on a different value
+    /** Both players each other, but not themselves */
     @Test
     public void twoSameNumbersHigh(){
         Round r = new Round(new Roll[]{d, c});
@@ -89,7 +86,7 @@ public class RoundTest
         assertEquals(riggedHighD.getHp(), 1);
     }
     
-    // 3 different results- Highest damages lowest, middle does nothing
+    /** 3 different results- Highest damages lowest, middle does nothing */
     @Test
     public void threeDifferent(){
         Round r = new Round(new Roll[]{a, c, f});
@@ -99,7 +96,7 @@ public class RoundTest
         assertEquals(riggedHighC.getHp(), 2);
     }
     
-    // 1 higher value damages 2 lower values
+    /** One player damages two others */
     @Test
     public void threeTieLow(){
         Round r = new Round(new Roll[]{d, c, f});
@@ -109,7 +106,7 @@ public class RoundTest
         assertEquals(riggedHighF.getHp(), 2);
     }
     
-    // 2 higher values damage 1 lower value
+    /** Two players damage one */
     @Test
     public void threeTieHigh(){
         Round r = new Round(new Roll[]{a, c, d});
@@ -119,7 +116,7 @@ public class RoundTest
         assertEquals(riggedHighD.getHp(), 2);
     }
     
-    // 3 players all damage each other, but not themselves
+    /** 3 players all damage each other, but not themselves */
     @Test
     public void threeTieFull(){
         Round r = new Round(new Roll[]{e, c, d});
@@ -129,7 +126,7 @@ public class RoundTest
         assertEquals(riggedHighD.getHp(), 0);
     }
     
-    // Tests detection of the highest and lowest values in a round
+    /** Tests detection of the highest and lowest values in a round */
     @Test
     public void findHighestLowest(){
         Round r = new Round(new Roll[]{a, b, c, d, e, f});
@@ -138,8 +135,7 @@ public class RoundTest
         assertEquals(r.findLowest(), 1);
     }
     
-    // Tests the process of finding "indices" based on a given value
-    // The name is slightly misleading, as it can take and find any value- it's just originally meant for the highest and lowest to be plugged in.
+    /** Tests the process of finding "indices" based on a given value */
     @Test
     public void indices(){
         Round r = new Round(new Roll[]{a, b, c, d, e, f});

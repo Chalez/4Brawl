@@ -2,8 +2,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A Player has multiple stats which determine its performance in brawls...
- * and a name which is returned if they win.
+ * A Player has multiple stats which determine its performance in brawls, and a name which is returned if they win.
  * Players can roll dice, take damage, and damage other players.
  */
 public class Player
@@ -12,7 +11,7 @@ public class Player
     private int maxHp;
     private int hp;
     
-    // Home much damage a player deals.
+    // How much damage a player deals.
     private int dmg;
     
     // The base modifier to all of the player's rolls.
@@ -27,17 +26,17 @@ public class Player
     // Since this is changed so little, doing so is limited to Attributes.
     private int diceSize;
     
-    // Ticks up every time the player rolls
+    // Ticks up every time the player rolls, for timed attributes.
     private int rollTimer;
     
-    // A player's name, which is returned when they win a brawl
+    // A player's name, which is returned when they win a brawl.
     private String name;
     
-    // The runner which stores Attributes, additional modifiers.
+    // The Runner which stores Attributes, additional modifiers.
     private Runner runner;
     private HashMap attributes;
     
-    // The number of times a player can add 1 to their rolls. Based on multiAddOne attribute
+    // The number of times a player can add 1 to their rolls. Used by multiAddOne attribute
     private int plusOnes;
     private int defPlusOnes;
     
@@ -119,7 +118,7 @@ public class Player
         return diceMod;
     }
     
-    /** Changes a player's max hp. Currently not used, but effects which do so exist. */
+    /** Changes a player's max hp to a nonnegative value. Currently not used, but effects which do so exist. */
     public void setMaxHp(int a){
         if(a >= 0){
             maxHp = a;
@@ -128,7 +127,7 @@ public class Player
         lowerBoundHp();
     }
     
-    /** Sets the player's current hp. */
+    /** Sets the player's current hp to a nonnegative value. */
     public void setHp(int a){
         if(a >= 0){
             hp = a;
@@ -137,7 +136,7 @@ public class Player
         lowerBoundHp();
     }
     
-    /** Sets the player's current dmg. */
+    /** Sets the player's current dmg to a nonnegative value. */
     public void setDmg(int a){
         if(a >= 0){
             dmg = a;
@@ -149,31 +148,33 @@ public class Player
         diceMod = a;
     }
     
-    /** Causes a player to take damage, and prints it if d is true. */
+    /** Causes a player to take a nonzero amount of damage, and if d is true, prints if the player dies. */
     public void takeDmg(int dmgFromPlayer, boolean d){
+        boolean startingLife = this.isDead();
         if (dmgFromPlayer > 0){
             hp -= dmgFromPlayer;
         }
         lowerBoundHp();
         
-        if(this.isDead()){
+        if(this.isDead() && !startingLife){
             Helper.printIf(d, getName() + " Dies.");
         }
     }
     
-    /** Causes the player to take damage. */
+    /** Causes the player to take a nonzero amount of damage. */
     public void takeDmg(int dmgFromPlayer){
         takeDmg(dmgFromPlayer, false);
     }
     
-    /** Deals damage to another player equal to dmg, and prints it if d is true. */
+    /** Deals damage to another player equal to dmg, and prints it if d is true.
+        Notably, this does not allow a player to damage themselves.*/
     public void dealDmg(Player p, boolean d){
         if(p != this){
             p.takeDmg(this.dmg, d);
         }
     }
     
-    /** Deals damage to another player equal to dmg. */
+    /** Deals damage to another player equal to dmg without printing. */
     public void dealDmg(Player p){
         dealDmg(p, false);
     }
@@ -197,7 +198,7 @@ public class Player
         return (hp == 0);
     }
     
-    /** Resets all of the player's stats to their default values. */
+    /** Resets all of the player's stats to their default values. Called between brawls to refresh attributes and health.*/
     public void reset(){
         hp = defHp;
         maxHp = defHp;
@@ -256,13 +257,15 @@ public class Player
         return true;
     }
     
-    /** Returns the value of an attribute, or -1 if the attribute is not present. */
+    /** Returns the value of the given attribute, or -1 if the attribute is not present. */
     public int getAttribute(String s){
         AtomicInteger x = (AtomicInteger)attributes.getOrDefault(s, new AtomicInteger(-1));
         return x.intValue();
     }
     
-    /** Performs reactions to a set of rolls given an array of rolls and the index of the one belonging to the player. */
+    /** Performs reactions to a set of rolls given an array of rolls and the index of the one belonging to the player.
+     *  Currently used for the multiAddOne Attribute, but more could be included in the future.
+       */
     public void respond(int ownedIndex, Roll[] allRolls){
         int lowestOther = 99;
         for(int i = 0; i < allRolls.length; i++){

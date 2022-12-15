@@ -3,10 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 /**
- * Write a description of class Runner here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * An object which takes in strings, using a hashmap to store them and how many of each have been added.
+ * Used both to track the result of many brawls and to store Attributes in each player
  */
 public class Runner
 {
@@ -15,14 +13,14 @@ public class Runner
     // the number of inputs given to the Runner
     int total;
 
-    // Constructor
+    /** Constructor, starting empty by default. */
     public Runner()
     {
         map = new HashMap<String, AtomicInteger>();
         total = 0;
     }
 
-    // Adds an outcome to the map
+    /** Adds a string to the Runner. */
     public void addResult(String s)
     {
         total++;
@@ -34,7 +32,7 @@ public class Runner
         }
     }
     
-    // Prints the outcomes, the number of times they happened, and decimal equivalent.
+    /** Prints the outcomes, the number of times they happened, and decimal equivalent. */
     public void print(){
         String format = "%-20s%-20s%s%n";
         Object[] array = map.keySet().toArray();
@@ -43,12 +41,12 @@ public class Runner
         }
     }
     
-    // Returns the map itself- mostly for the purpose of tests, which can't understand the print version
+    /** Returns the map stored in the runner. */
     public HashMap getMap(){
         return map;
     }
     
-    // Returns the number of inputs given to this runner.
+    /** Returns the number of inputs given to this runner. */
     public int getTotal(){
         return total;
     }

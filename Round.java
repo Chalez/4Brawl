@@ -2,6 +2,7 @@
 /**
  * A Round is a piece of a brawl where every player rolls a dice.
  * Players who roll the highest damage players who roll the lowest.
+ * Each Round object takes in an array of rolls, runs, and then is discarded.
  */
 import java.util.ArrayList;
 
@@ -39,18 +40,24 @@ public class Round
                 callowInd = i;
             }
         }
-        if(callowInd != -1 && playerRolls[callowInd].getCurrent() == findHighest()){
+        if( callowInd != -1 && 
+            playerRolls[callowInd].getCurrent() == findHighest() &&
+            getIndices(findHighest()).size() > 1){
             highest = new ArrayList<Integer>();
             highest.add(callowInd);
+            //System.out.println("High tiebreak!");
         }
-        if(callowInd != -1 && playerRolls[callowInd].getCurrent() == findLowest()){
+        if( callowInd != -1 &&
+            playerRolls[callowInd].getCurrent() == findLowest() &&
+            getIndices(findLowest()).size() > 1){
             lowest.remove(playerRolls[callowInd]);
+            //System.out.println("Low tiebreak!");
         }
         
         // All the highest damage all the lowest
         for(int i = 0; i < highest.size(); i++){
             for(int j = 0; j < lowest.size(); j++){
-                Helper.printIf( desc && i != j,
+                Helper.printIf( desc && highest.get(i) != lowest.get(j),
                                 playerRolls[highest.get(i).intValue()].getOwner().getName()
                                 + " deals " + 
                                 playerRolls[highest.get(i).intValue()].getOwner().getDmg()
@@ -64,7 +71,7 @@ public class Round
         }
     }
 
-    /** Finds the highest value in the array of rolls. */
+    /** Outputs the highest value in the Round's array of rolls. */
     int findHighest(){
         int highest = -1; 
         int i;
@@ -79,7 +86,7 @@ public class Round
         return highest;
     }
     
-    /** Finds the lowest value in the array of rolls. */
+    /** Outputs the lowest value in the Round's array of rolls. */
     int findLowest(){
         int lowest = 9999; 
         int i;

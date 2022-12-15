@@ -1,28 +1,12 @@
 
 /**
- * Write a description of class Helper here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * A helper class which, currently, only contains the static method printIf.
  */
 public class Helper
 {
-    private int x;
-
     /**
-     * Constructor for objects of class Helper
-     */
-    public Helper()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * If the input boolean is true, the input string is printed. Otherwise, nothing happens.
+     * This is used to implement the printing mode in fewer lines.
      */
     public static void printIf(boolean f, String text)
     {

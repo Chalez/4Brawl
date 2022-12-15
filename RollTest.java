@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * The test class RollTest.
- *
- * @author  (your name)
- * @version (a version number or a date)
+ * Tests the individual dice rolls and their modifications.
  */
 public class RollTest
 {
@@ -41,14 +38,14 @@ public class RollTest
     {
     }
     
-    // Setting a roll's value should make it that value. Very basic
+    /** Setting a roll's value should make it that value. Very basic */
     @Test
     public void worksAtAll(){
         a.setCurrent(1);
         assertEquals(a.getCurrent(), 1);
     }
     
-    // Roll cannot exceed its highest value
+    /** Roll cannot exceed its highest value */
     @Test
     public void upperBound(){
         a.setCurrent(6);
@@ -56,7 +53,7 @@ public class RollTest
         assertEquals(a.getCurrent(), 6);
     }
     
-    // Roll cannot become lower than 1
+    /** Roll cannot become lower than 1 */
     @Test
     public void lowerBound(){
         a.setCurrent(1);
@@ -64,20 +61,20 @@ public class RollTest
         assertEquals(a.getCurrent(), 1);
     }
     
-    // The player who owns a roll can be properly referenced,
+    /** The player who owns a roll can be properly referenced */
     @Test
     public void referenceOwner(){
         assertEquals(a.getOwner().getName(), "Default");
     }
     
-    // A dice of non-standard size can have a maximum above 6
+    /** A dice of non-standard size can have a maximum above 6 */
     @Test
     public void diceSize(){
         b.setCurrent(8);
         assertEquals(b.getCurrent(), 8);
     }
     
-    // The size of a dice cannot go below 1
+    /** The size of a dice cannot go below 1 */
     @Test
     public void minDiceSize(){
         c.setCurrent(-1);

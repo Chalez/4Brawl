@@ -24,13 +24,13 @@ public class Main
         Player a = new Player("Player A", 2, 1, 0);
         Player b = new Player("Player B", 2, 1, 0);
         Player c = new Player("Player C", 2, 1, 0);
-        Player d = new Player("Player D", 3, 2, -1);
+        Player d = new Player("Player D", 2, 1, -1);
         Player e = new Player("Player E", 2, 1, 0, new String[]{"tiebreak"});
         Player f = new Player("Player F", 2, 1, 1, new String[]{"timedModDown", "timedModDown"});
         
         // Creates a brawl using the players defined above
         // THE NUMBER OF PLAYERS AND WHICH PLAYERS PARTICIPATE CAN BE SAFELY CHANGED
-        Brawl q = new Brawl(new Player[]{a, b, c, d});
+        Brawl q = new Brawl(new Player[]{c, b});
         
         // The brawl is run multiple times and the results of each are stored.
         for (int i = 0; i < iterations; i++){
@@ -56,13 +56,13 @@ public class Main
         Player a = new Player("Player A", 2, 1, 0);
         Player b = new Player("Player B", 2, 1, 0);
         Player c = new Player("Player C", 2, 1, 0);
-        Player d = new Player("Player D", 3, 2, -1);
+        Player d = new Player("Player D", 2, 1, 0);
         Player e = new Player("Player E", 2, 1, 0, new String[]{"tiebreak"});
         Player f = new Player("Player F", 2, 1, 1, new String[]{"timedModDown", "timedModDown"});
         
         // Creates a brawl using the players defined above
         // THE NUMBER OF PLAYERS AND WHICH PLAYERS PARTICIPATE CAN BE SAFELY CHANGED
-        Brawl q = new Brawl(new Player[]{b, c}, true);
+        Brawl q = new Brawl(new Player[]{a, b, c}, true);
         
         // The results are printed.
         q.run();

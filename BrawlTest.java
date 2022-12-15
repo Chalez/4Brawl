@@ -6,10 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * The test class BrawlTest.
- *
- * @author  (your name)
- * @version (a version number or a date)
+ * Tests the brawls which put players through repeated rounds.
  */
 public class BrawlTest
 {
@@ -38,6 +35,7 @@ public class BrawlTest
     {
     }
     
+    /** Tests that a brawl can reset all of its players' health */
     @Test
     public void resetHP(){
         a.takeDmg(1);
@@ -50,6 +48,7 @@ public class BrawlTest
         assertEquals(b.getHp(), 2);
     }
     
+    /** Tests that a brawl can reset all of its players' dmg */
     @Test
     public void resetDmg(){
         a.setDmg(3);
@@ -62,6 +61,7 @@ public class BrawlTest
         assertEquals(b.getDmg(), 1);
     }
     
+    /** Tests that a brawl can reset all of its players' dice modifier */
     @Test
     public void resetMod(){
         a.setMod(2);
@@ -74,6 +74,7 @@ public class BrawlTest
         assertEquals(b.getMod(), 0);
     }
     
+    /** Finds the number of players alive in the brawl */
     @Test
     public void livingCount(){
         Brawl q = new Brawl(new Player[]{a, b});
@@ -84,6 +85,7 @@ public class BrawlTest
         assertEquals(q.livingPlayers(), 0);
     }
     
+    /** Finds the last living player in the brawl */
     @Test
     public void lastPlayer(){
         Brawl q = new Brawl(new Player[]{a, b});

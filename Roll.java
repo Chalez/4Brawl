@@ -29,7 +29,7 @@ public class Roll
     /** Constructor with just a maximum size defined. */
     public Roll(int maximum)
     {
-        this(null, maximum);
+        this(new Player("default"), maximum);
     }
     
     /** Constructor with just an owner defined. */
@@ -38,13 +38,13 @@ public class Roll
         this(n, 6);
     }
     
-    /** Default constructor with a null owner and a default size of 6. */
+    /** Default constructor with a default owner and a default size of 6. */
     public Roll()
     {
-        this(null, 6);
+        this(new Player("default"), 6);
     }
     
-    /** Generates a random number for the roll. Currently only called on creation of the roll, but could also be used for reroll effects. */
+    /** Generates a random number stored in the roll. Currently only called on creation of the roll, but could also be used for reroll effects. */
     public void roll()
     {
         current = (int) (Math.random() * this.max + 1);
@@ -56,7 +56,7 @@ public class Roll
         return current;
     }
     
-    /** Sets the roll's value to a number. */
+    /** Sets the roll's value to a given integer. */
     public void setCurrent(int x)
     {
         current = x;

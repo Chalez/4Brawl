@@ -2,6 +2,8 @@ import java.util.Arrays;
 
 /**
  * The brawl itself, containing many players who take part in repeated rounds.
+ * The brawl takes in the participating players as an array, and can be run multiple times.
+ * When run, the brawl returns the name of the winning player.
  */
 public class Brawl
 {
@@ -56,8 +58,12 @@ public class Brawl
                 //r[i] = players[i].roll();
             }
             
-            for(int i = 0; i < r.length; i++){
-                r[i].getOwner().respond(i, r);
+            // Gives each player a chance to respond, twice.
+            // # of chances can be increased if number of responses does
+            for(int j = 0; j < 2; j++){
+                for(int i = 0; i < r.length; i++){
+                    r[i].getOwner().respond(i, r);
+                }
             }
             
             Helper.printIf(desc, "Round " + roundsCount + ": " + Arrays.toString(r));
@@ -85,7 +91,7 @@ public class Brawl
         return count;
     }
     
-    /** Returns the first living player in the array. Meant to be called when only 1 player is left. */
+    /** Returns the first living player in the Brawl's array. Meant to be called when only 1 player is left. */
     public Player lastPlayer(){
         for(int i = 0; i < players.length; i++){
             if(!players[i].isDead()){
